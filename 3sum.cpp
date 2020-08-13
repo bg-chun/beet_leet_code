@@ -143,8 +143,8 @@ public:
     
     vector<vector<int>> threeSum(vector<int>& nums) {
         vector<vector<int>> ret;
-        vector<int> tmp;
-        map<int, map<int, map<int, bool>>> hash;
+        //vector<int> tmp;
+        //map<int, map<int, map<int, bool>>> hash;
         // the approach is making the problem simpler.
         // so we`re going to make this to be two sum problem set.
         // pick a number and find the other two numbers.
@@ -165,17 +165,9 @@ public:
                 continue;
             }
             
-            //nums[i] is picked
-            //tmp.clear();
-            //tmp = twoSum(nums, i, 0 - nums[i]);
-            twoSum(nums, i, 0 - nums[i], ret, hash);
+            //twoSum(nums, i, 0 - nums[i], ret, hash);
+            twoSum(nums, i, 0 - nums[i], ret);
 
-            //if (tmp.size() != 2)
-            //{
-            //    continue;
-            //}
-            
-            //ret.push_back(vector<int>{nums[i], tmp[0], tmp[1]});
             
         }
         
@@ -184,7 +176,7 @@ public:
     }
     
     //vector<int>
-    void twoSum(vector<int>& nums, int picked/*this is the index*/, int target/*this is the value*/, vector<vector<int>>& ret, map<int, map<int, map<int, bool>>>& hash) {
+    void twoSum(vector<int>& nums, int picked/*this is the index*/, int target/*this is the value*/, vector<vector<int>>& ret/*, map<int, map<int, map<int, bool>>>& hash*/) {
         //vector<int> tmp;
         
         // The algorithm is:
@@ -192,7 +184,7 @@ public:
         // if low + high is less than the target move low to its right.
         // if low + high is equal to the target this is answer.
         int low = picked+1, high = nums.size() -1;
-        int last_low_num, last_high_num;
+        //int last_low_num, last_high_num;
         
         while(low < high)
         {
@@ -206,7 +198,8 @@ public:
             }
             else // otherwise this is the answer.
             {
-                if (hash[nums[picked]][nums[low]][nums[high]] != true)
+                // this hash approach requires O(n^3) space complexity... don`t do this.
+                /*if (hash[nums[picked]][nums[low]][nums[high]] != true)
                 {
                     ret.push_back(vector<int>{nums[picked], nums[low], nums[high]});
                     hash[nums[picked]][nums[low]][nums[high]] = true;
@@ -215,7 +208,25 @@ public:
                 //find the other answer.
                 high--;
                 low++;
-                continue;
+                continue;*/
+                
+                ret.push_back(vector<int>{nums[picked], nums[low], nums[high]});
+                
+                
+                low++;
+                high--;
+
+                
+                //if we found two numbers(the first and second one), we don`t have to repeat these numbers.
+                //ex) if the first/second number is `-1` and `0`, the third number is always `1` to be added up to `0`
+                //so if you found an answer, you must have to skip the same number for the second element.
+                //if the given array is {-3, -1, 0, 1, 1, 1, 1, 1, 1, .........., 1, 2}, then when you found the answer{-3, 1, 2},
+                //you should ignore the all of remain `1` as the second element of answer.
+                while(low < high && nums[low] == nums[low-1])
+                {
+                    low++;
+                }
+                
                 
             }
         }
