@@ -1,4 +1,3 @@
-//https://leetcode.com/problems/merge-two-binary-trees/
 /**
  * Definition for a binary tree node.
  * struct TreeNode {
@@ -12,7 +11,7 @@
  */
 class Solution {
 public:
-    TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+    /*TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
         
         // all we need to do is overlapping two trees.
         // but how to?
@@ -70,15 +69,6 @@ public:
         {
             t1->val += t2->val;
         }
-        /*else if (t1 == NULL && t2 != NULL)
-        {
-            //we have to use the node of t2 for returning tree(t1)
-            
-        }
-        else
-        {
-            //where t2 is NULL and t1 is !NULL
-        }*/
         
         // right
         traverseAndMerge(t1 != NULL ? t1->right : NULL, t2 != NULL ? t2->right : NULL);
@@ -107,5 +97,27 @@ public:
             t1->right = t2->right;
         }
         makeRet(t1 != NULL ? t1->right : NULL, t2 != NULL ? t2->right : NULL);
+    }*/
+    TreeNode* mergeTrees(TreeNode* t1, TreeNode* t2) {
+        if (t1 == NULL)
+        {
+            return t2;
+        }
+
+        if (t2 == NULL){
+            return t1;
+        }
+
+        //left
+        t1->left = mergeTrees(t1->left, t2->left);
+        
+        //cur
+        t1->val += t2->val;
+        
+        
+        //right
+        t1->right = mergeTrees(t1->right, t2->right);
+        
+        return t1;
     }
 };
